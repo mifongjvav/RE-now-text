@@ -1,0 +1,2 @@
+argoncodekits==0.5.2
+terminaltables3==4.0.0
