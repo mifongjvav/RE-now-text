@@ -1,4 +1,4 @@
-# RE:now!text Alpha0.1
+# RE:now!text Alpha0.2
 
 致力于做最好的纯命令行Galgame引擎
 
@@ -6,8 +6,8 @@
 > RE:now!text还在极早期开发阶段，以下为功能列表
 
 - [x] 基本游戏功能
-- [ ] 主菜单（未完全实现）
-- [ ] 自定义制表符
+- [x] 主菜单（基本实现）
+- [x] 自定义制表符
 - [ ] 其它...
 
 ## 安装依赖
@@ -21,15 +21,12 @@ pip install -r requirements.txt
 游戏默认会尝试运行./level/level1.py
 
 ```python
-import sys
-import os
-import ArgonCodeKits as ack
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from init import init
+init()
 from galite import *  # noqa: F403
-ack.init_log_file("INFO")
 ```
 
-替换`level1.py`的内容，头部不可变
+运行前必须执行以上代码来初始化
 
 | 类型 | 用途 |
 | :---: | :---: |
