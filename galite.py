@@ -4,6 +4,8 @@ import subprocess
 import getpass
 import importlib
 import traceback
+from rich import print
+import builtins
 
 # 全局当前主题类（默认双线框）
 _current_theme = DoubleTable
@@ -12,17 +14,103 @@ _current_theme = DoubleTable
 input_text = [None]
 return_value = [None]
 
+# 自定义圆角边框表格类
+class RoundedTable(DoubleTable):
+    """支持圆角边框的表格"""
+    
+    # 圆角边框字符
+    CHAR_CORNER_TOP_LEFT = '╭'
+    CHAR_CORNER_TOP_RIGHT = '╮'
+    CHAR_CORNER_BOTTOM_LEFT = '╰'
+    CHAR_CORNER_BOTTOM_RIGHT = '╯'
+    CHAR_HORIZONTAL = '─'
+    CHAR_VERTICAL = '│'
+    CHAR_INTERSECTION = '┼'
+    CHAR_TOP_INTERSECTION = '┬'
+    CHAR_BOTTOM_INTERSECTION = '┴'
+    CHAR_LEFT_INTERSECTION = '├'
+    CHAR_RIGHT_INTERSECTION = '┤'
+    
+    @property
+    def table(self):
+        """重写 table 属性以使用圆角边框"""
+        original = super().table
+        lines = original.split('\n')
+        
+        if not lines:
+            return original
+        
+        result = []
+        for i, line in enumerate(lines):
+            if i == 0:  # 第一行（上边框）
+                # 处理标题行
+                if line.startswith('╔'):
+                    # 找到第一个和最后一个非边框字符的位置
+                    chars = list(line)
+                    # 左边框
+                    chars[0] = self.CHAR_CORNER_TOP_LEFT
+                    # 右边框
+                    chars[-1] = self.CHAR_CORNER_TOP_RIGHT
+                    # 中间的水平线
+                    for j in range(1, len(chars)-1):
+                        if chars[j] == '═':
+                            chars[j] = self.CHAR_HORIZONTAL
+                    line = ''.join(chars)
+                    
+            elif i == len(lines) - 1:  # 最后一行（下边框）
+                if line.startswith('╚'):
+                    chars = list(line)
+                    chars[0] = self.CHAR_CORNER_BOTTOM_LEFT
+                    chars[-1] = self.CHAR_CORNER_BOTTOM_RIGHT
+                    for j in range(1, len(chars)-1):
+                        if chars[j] == '═':
+                            chars[j] = self.CHAR_HORIZONTAL
+                    line = ''.join(chars)
+                    
+            else:  # 中间的行
+                # 处理分隔线（如果有）
+                if line and line[0] in ('╠', '├', '╟'):
+                    chars = list(line)
+                    chars[0] = self.CHAR_LEFT_INTERSECTION
+                    chars[-1] = self.CHAR_RIGHT_INTERSECTION
+                    for j in range(1, len(chars)-1):
+                        if chars[j] in ('═', '─', '╤', '╪'):
+                            chars[j] = self.CHAR_HORIZONTAL
+                        elif chars[j] in ('╥', '┬'):
+                            chars[j] = self.CHAR_TOP_INTERSECTION
+                        elif chars[j] in ('╨', '┴'):
+                            chars[j] = self.CHAR_BOTTOM_INTERSECTION
+                        elif chars[j] in ('╫', '┼'):
+                            chars[j] = self.CHAR_INTERSECTION
+                    line = ''.join(chars)
+                else:
+                    # 普通内容行
+                    chars = list(line)
+                    if chars and chars[0] == '║':
+                        chars[0] = self.CHAR_VERTICAL
+                    if chars and chars[-1] == '║':
+                        chars[-1] = self.CHAR_VERTICAL
+                    line = ''.join(chars)
+            
+            result.append(line)
+        
+        return '\n'.join(result)
+
+# 主题映射
+THEMES = {
+    'double': DoubleTable,
+    'single': SingleTable,
+    'ascii': AsciiTable,
+    'rounded': RoundedTable
+}
+
 def set_theme(theme_name: str = 'double'):
     """设置全局表格主题"""
     global _current_theme
-    if theme_name == 'double':
-        _current_theme = DoubleTable
-    elif theme_name == 'single':
-        _current_theme = SingleTable
-    elif theme_name == 'ascii':
-        _current_theme = AsciiTable
+    if theme_name in THEMES:
+        _current_theme = THEMES[theme_name]
     else:
-        raise ValueError("无效的主题，请选择 'double', 'single' 或 'ascii'")
+        raise ValueError(f"无效的主题，请选择: {', '.join(THEMES.keys())}")
 
 def _get_table_class(theme=None):
     """
@@ -126,7 +214,7 @@ def A(name: str = "undefined", level: int = 0, theme=None):
     table.title = title_text
     
     # 输出带颜色的表格
-    print(f'\n{color_code}{table.table}\033[0m')
+    builtins.print(f'\n{color_code}{table.table}\033[0m')
     global return_value
     return_value[0] = table.table
     enter_is_next()
@@ -134,9 +222,9 @@ def A(name: str = "undefined", level: int = 0, theme=None):
 def N(path: str):
     clear()
     try:
-        importlib.import_module(f"level.{path}")
         with open('now', 'w', encoding='utf-8') as f:
             f.write(path)
+        importlib.import_module(f"level.{path}")
     except Exception as e:
         print(f"加载关卡失败: {e}")
         traceback.print_exc()  # 打印详细堆栈

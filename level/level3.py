@@ -1,7 +1,7 @@
 from level.init import init
 init()
-from galite import P, S, clear, return_value  # noqa: E402
-from level.l3lib import wow, input_text_l3lib  # noqa: E402
+from galite import P, S, clear, return_value, input_text  # noqa: E402
+from level.l3lib import wow, input_text_l3lib, markdown  # noqa: E402
 
 P("Argon", "欢迎来到RE:now!text的第三关！")
 P("Argon", "这是一个示例模板……停，你好像已经听腻了，那不如我们换换口味吧")
@@ -9,9 +9,9 @@ clear()
 P("Argon", "伟大的RE:now!text第三关！现已开始！", hide=True)
 wow(return_value[0], text_color='black')
 P("Argon", "怎么样？这个效果还不错吧？")
-P("Argon", "你可以使用wow()来改变P的显示效果，注意只有hide参数为True时才不会输出原本的对话框")
-P("Argon", "第三关的目标是：使用wow()来改变P的显示效果，注意只有hide参数为True时才不会输出原本的对话框")
-P("Argon", "你可以给wow()传入不同的参数来改变渐变的颜色、文字颜色、是否加粗等，试试看吧！")
+P("Argon", "你可以使用 wow() 来改变P的显示效果，注意只有hide参数为True时才不会输出原本的对话框")
+P("Argon", "第三关的目标是：使用 wow() 来改变P的显示效果，注意只有hide参数为True时才不会输出原本的对话框")
+P("Argon", "你可以给 wow() 传入不同的参数来改变渐变的颜色、文字颜色、是否加粗等，试试看吧！")
 P("Argon", "现在是薄荷到薰衣草！", hide=True)
 wow(return_value[0], start_color=[204, 255, 229], end_color=[230, 230, 250], text_color='black')
 P("Argon", "怎么样？这个颜色还不错吧？这是用Rich库实现的")
@@ -29,4 +29,20 @@ if input_text_l3lib[0] == "wow(return_value[0], start_color=[170, 224, 242], end
 else:
     P("Argon", "你写的代码是：\n" + input_text_l3lib[0] + "\n虽然不完全正确，但也不错了！")
 P("Argon", "注意：wow的input逻辑使用l3lib里面的input_text_l3lib而非galite里面的input_text")
-P("Argon", "第三关现在结束了，在我想到下一个玩法之前，不会有第四关")
+P("Argon", "第三关现在结束了（划掉），第三关被我续写了\n你可能想问为什么我不用Rich的样式属性，因为有bug")
+text = """
+# 这是l3lib的markdown功能
+
+太酷了！
+
+"""
+markdown(text)
+P('Argon', '自0.4版本开始，你可以使用markdown函数来渲染Markdown内容文本了，\n受Rich限制，它不支持GitHub的Alerts语法')
+S('Argon', '接下来，它会渲染你输入的Markdown文件')
+try:
+    with open(input_text[0], 'r', encoding='utf-8') as f:
+        md_text = f.read()
+except Exception as e:
+    P('Argon', e)
+    md_text = "# 错误：无法读取文件\n\n请确保文件路径正确。\n"
+markdown(md_text)
