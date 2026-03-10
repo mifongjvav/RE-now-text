@@ -3,9 +3,12 @@ from rich.text import Text
 from rich.style import Style
 from rich.color import Color
 import time
+from rich.markdown import Markdown
+import re
 from level.init import init
 init()
 from galite import enter_is_next  # noqa: E402
+
 
 input_text_l3lib = [None]
 
@@ -83,3 +86,31 @@ def wow(
         input_text_l3lib[0] = input()   # 等待用户输入，无额外提示
     else:
         enter_is_next()            # 等待回车
+def markdown(markdown_text: str='# undefined'):
+    console = Console()
+    console.clear()
+    console.print()
+    
+    # 检查常见的GFM语法
+    gfm_patterns = {
+        '任务列表': r'- \[[ x]\]',
+        '删除线': r'~~.*~~',
+        '警告框(Alerts)': r'>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]'
+    }
+    
+    found = []
+    for name, pattern in gfm_patterns.items():
+        if re.search(pattern, markdown_text, re.MULTILINE | re.IGNORECASE):
+            found.append(name)
+    
+    if found:
+        from rich import print
+        print("[yellow]⚠️ 警告: 检测到GFM扩展语法，Rich不支持以下特性:[/yellow]")
+        for item in found:
+            print(f"  • {item}")
+        print("  这些内容将被渲染为普通文本或标准Markdown格式")
+        print()
+    
+    md = Markdown(markdown_text)
+    console.print(md)
+    enter_is_next()

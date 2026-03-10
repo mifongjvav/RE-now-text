@@ -1,4 +1,4 @@
-# RE:now!text Alpha0.3
+# RE:now!text Alpha0.4
 
 致力于做最好的纯命令行Galgame引擎
 
