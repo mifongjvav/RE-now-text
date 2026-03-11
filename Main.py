@@ -2,13 +2,26 @@ from MenuLite.MlMain import ml_input
 from MenuLite.MlMain import set_condition_var
 import time
 import shared_data
+from level.l3lib import wow
+
+wow("""
+██████╗ ███████╗   ███╗   ██╗ ██████╗ ██╗    ██╗      ████████╗███████╗██╗  ██╗████████╗
+██╔══██╗██╔════╝██╗████╗  ██║██╔═══██╗██║    ██║      ╚══██╔══╝██╔════╝╚██╗██╔╝╚══██╔══╝
+██████╔╝█████╗  ╚═╝██╔██╗ ██║██║   ██║██║ █╗ ██║█████╗   ██║   █████╗   ╚███╔╝    ██║   
+██╔══██╗██╔══╝  ██╗██║╚██╗██║██║   ██║██║███╗██║╚════╝   ██║   ██╔══╝   ██╔██╗    ██║   
+██║  ██║███████╗╚═╝██║ ╚████║╚██████╔╝╚███╔███╔╝         ██║   ███████╗██╔╝ ██╗   ██║   
+╚═╝  ╚═╝╚══════╝   ╚═╝  ╚═══╝ ╚═════╝  ╚══╝╚══╝          ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝   
+""",start_color=[51,51,51],end_color=[61,61,61],wait=False)
+wow("终端无限，故事可见",text_color='black',wait=False)
 
 if time.time() == 1: # 骗过pyinstaller的静态分析，确保在打包所有关卡模块并且不执行
     import level.level1  # noqa: F401
     import level.level2  # noqa: F401
     import level.level3  # noqa: F401
+    import level.level4
     import level.init  # noqa: F401
     import level.l3lib  # noqa: F401
+    import level.l4lib
 
 try:
     with open('now', 'r', encoding='utf-8') as f:

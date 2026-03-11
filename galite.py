@@ -230,7 +230,7 @@ def N(path: str):
         traceback.print_exc()  # 打印详细堆栈
         enter_is_next()
 
-def E(code: int):
+def E(code: int=0):
     clear()
     sys.exit(code)
 
