@@ -19,16 +19,8 @@ coloredlogs.install(
         fmt="%(asctime)s - %(levelname)s - %(funcName)s - %(message)s"
     )
 
-logging.info("""
-██████╗ ███████╗   ███╗   ██╗ ██████╗ ██╗    ██╗      ████████╗███████╗██╗  ██╗████████╗
-██╔══██╗██╔════╝██╗████╗  ██║██╔═══██╗██║    ██║      ╚══██╔══╝██╔════╝╚██╗██╔╝╚══██╔══╝
-██████╔╝█████╗  ╚═╝██╔██╗ ██║██║   ██║██║ █╗ ██║█████╗   ██║   █████╗   ╚███╔╝    ██║   
-██╔══██╗██╔══╝  ██╗██║╚██╗██║██║   ██║██║███╗██║╚════╝   ██║   ██╔══╝   ██╔██╗    ██║   
-██║  ██║███████╗╚═╝██║ ╚████║╚██████╔╝╚███╔███╔╝         ██║   ███████╗██╔╝ ██╗   ██║   
-╚═╝  ╚═╝╚══════╝   ╚═╝  ╚═══╝ ╚═════╝  ╚══╝╚══╝          ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝   
-""")
 notice = requests.get('https://gh.llkk.cc/https://raw.githubusercontent.com/mifongjvav/mifongjvav/refs/heads/main/RNT_msg.md').text
-markdown(notice)
+markdown(notice, wait=False)
 logging.warning('\n警告：RE:now!text还处于极早期测试阶段，出现任何bug都是很正常的\n出现bug请反馈：https://github.com/mifongjvav/RE-now-text/issues/new')
 
 def get_config_path():

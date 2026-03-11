@@ -1,6 +1,6 @@
 from level.init import init
 init()
-from galite import P, S, clear, return_value, input_text  # noqa: E402
+from galite import P, S, N, clear, return_value, input_text  # noqa: E402
 from level.l3lib import wow, input_text_l3lib, markdown  # noqa: E402
 
 P("Argon", "欢迎来到RE:now!text的第三关！")
@@ -46,3 +46,5 @@ except Exception as e:
     P('Argon', e)
     md_text = "# 错误：无法读取文件\n\n请确保文件路径正确。\n"
 markdown(md_text)
+P('Argon', '发明Rich的真是个天才，下一关你会见识到更多基于Rich的高级函数')
+N('level4')

@@ -21,7 +21,8 @@ def wow(
     direction="horizontal",          # 渐变方向: horizontal, vertical
     animate=False,                   # 是否逐字显示动画
     animation_speed=0.1,             # 动画速度（秒）
-    wait_input=False,                 # 是否在显示后等待用户输入（代替 enter_is_next）
+    wait_input=False,                 # 是否在显示后等待用户输入
+    wait=True
 ):
     """
     打印带渐变背景的彩色文字，可选择是否等待用户输入
@@ -85,8 +86,10 @@ def wow(
         global input_text_l3lib
         input_text_l3lib[0] = input()   # 等待用户输入，无额外提示
     else:
-        enter_is_next()            # 等待回车
-def markdown(markdown_text: str='# undefined'):
+        if wait:
+            enter_is_next()            # 等待回车
+
+def markdown(markdown_text: str='# undefined', wait: bool=True):
     console = Console()
     console.clear()
     console.print()
@@ -113,4 +116,13 @@ def markdown(markdown_text: str='# undefined'):
     
     md = Markdown(markdown_text)
     console.print(md)
-    enter_is_next()
+    if wait:
+        enter_is_next()
+
+def hex_to_rgb(hex_color: str) -> list:
+    """HEX 转 RGB，返回 [R, G, B]"""
+    hex_color = hex_color.replace('#', '')
+    r = int(hex_color[0:2], 16)
+    g = int(hex_color[2:4], 16)
+    b = int(hex_color[4:6], 16)
+    return [r, g, b]
