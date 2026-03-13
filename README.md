@@ -49,7 +49,7 @@ from leve;.l4lib import image
 | E | sys.exit() |
 | wow | 为对话框添加样式，注意不支持Rich主题 |
 | markdown | markdown支持 |
-| image | 显示图片 |
+| image | 显示图片，注意如果square为True横向分辨率会减半 |
 | set_theme | 设置主题 |
 
 其它没什么好说的，和Python一样，你可以随意搭配，放在什么目录都没人管你
