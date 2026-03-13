@@ -24,7 +24,7 @@ elif theme_choice == '2':
 elif theme_choice == '3':
     set_theme('rounded')
 else:
-    theme_choice = '1'
+    theme_choice = '3'
     P('Argon','你在做什么？')
 P('Argon',f'现在的主题是 {["single","double","ascii","rounded"][int(theme_choice)]} 了！')
 P('Argon','你玩到现在，有没有想问我是谁？')

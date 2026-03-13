@@ -29,41 +29,62 @@ def wow(
     """
     console = Console()
     
+    # 检查输入是否为空或无效
+    if not input_txt:
+        console.print("[red]错误: wow() 收到了空内容[/red]")
+        enter_is_next()
+        return
+    
+    # 确保输入是字符串，并检查是否误传了 Panel 对象
+    input_txt = str(input_txt)
+    if "<rich.panel.Panel object" in input_txt:
+        console.print("[red]错误: wow() 收到了 Panel 对象字符串，请直接传递文本内容[/red]")
+        console.print("[yellow]你应该这样调用: wow('你的文本', ...) 而不是 wow(return_value[0], ...)[/yellow]")
+        enter_is_next()
+        return
+    
     start_r, start_g, start_b = start_color
     end_r, end_g, end_b = end_color
     
     # 创建文本对象
     text = Text(input_txt)
-    text.stylize(Style(bold=bold, color=text_color))
     
     if direction == "vertical":
         # 垂直渐变（按行）
         lines = input_txt.split('\n')
         pos = 0
         for line_idx, line in enumerate(lines):
-            ratio = line_idx / max(1, len(lines) - 1)
+            if len(lines) > 1:
+                ratio = line_idx / (len(lines) - 1)
+            else:
+                ratio = 0
             r = int(start_r + (end_r - start_r) * ratio)
             g = int(start_g + (end_g - start_g) * ratio)
             b = int(start_b + (end_b - start_b) * ratio)
             
+            style = Style(bgcolor=Color.from_rgb(r, g, b), color=text_color, bold=bold)
             for _ in range(len(line)):
-                text.stylize(Style(bgcolor=Color.from_rgb(r, g, b)), pos, pos + 1)
+                text.stylize(style, pos, pos + 1)
                 pos += 1
             pos += 1  # 换行符
     else:
         # 水平渐变（默认，按字符）
         for i in range(len(text.plain)):
-            ratio = i / max(1, len(text.plain) - 1)
+            if len(text.plain) > 1:
+                ratio = i / (len(text.plain) - 1)
+            else:
+                ratio = 0
             r = int(start_r + (end_r - start_r) * ratio)
             g = int(start_g + (end_g - start_g) * ratio)
             b = int(start_b + (end_b - start_b) * ratio)
-            text.stylize(Style(bgcolor=Color.from_rgb(r, g, b)), i, i + 1)
-        
+            
+            style = Style(bgcolor=Color.from_rgb(r, g, b), color=text_color, bold=bold)
+            text.stylize(style, i, i + 1)
+    
     # 动画效果
     if animate:
         for i in range(1, len(text.plain) + 1):
             partial = Text(text.plain[:i])
-            # 复制对应位置的样式
             for span in text._spans:
                 if span.start < i:
                     end = min(span.end, i)
@@ -72,7 +93,6 @@ def wow(
             console.print()
             console.print(partial)
             time.sleep(animation_speed)
-        # 动画结束后，显示完整文本（确保最终画面清晰）
         console.clear()
         console.print()
         console.print(text)
@@ -81,13 +101,14 @@ def wow(
         console.print()
         console.print(text)
     
-    # 根据 wait_input 参数决定下一步
+    # 根据参数决定下一步
     if wait_input:
         global input_text_l3lib
-        input_text_l3lib[0] = input()   # 等待用户输入，无额外提示
-    else:
-        if wait:
-            enter_is_next()            # 等待回车
+        console.print()
+        console.print("[dim]请输入: [/dim]", end="")
+        input_text_l3lib[0] = input()
+    elif wait:
+        enter_is_next()
 
 def markdown(markdown_text: str='# undefined', wait: bool=True):
     console = Console()

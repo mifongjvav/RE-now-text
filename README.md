@@ -1,6 +1,8 @@
-# RE:now!text Alpha0.5
+# RE:now!text v1.0.0-rc
 
 - **终端无限，故事可见**
+
+最后一个测试版
 
 > [!WARNING]
 > RE:now!text还在极早期开发阶段
@@ -14,7 +16,8 @@
 - [x] 自定义制表符
 - [x] 自定义样式
 - [x] 打印图片
-- [x] 打包
+- [x] 自动化打包
+- [ ] 自动打包其它资源
 - [ ] 其它...
 
 ## 安装依赖
@@ -44,9 +47,10 @@ from leve;.l4lib import image
 | A | 进度 |
 | N | 切换关卡 |
 | E | sys.exit() |
-| wow | 使用Rich为对话框添加样式 |
+| wow | 为对话框添加样式，注意不支持Rich主题 |
 | markdown | markdown支持 |
-| image | 使用Rich显示图片 |
+| image | 显示图片 |
+| set_theme | 设置主题 |
 
 其它没什么好说的，和Python一样，你可以随意搭配，放在什么目录都没人管你
 
