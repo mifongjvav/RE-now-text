@@ -35,7 +35,7 @@ from level.init import init
 init()
 from galite import P, S, A, N, E, input_text, set_theme # noqa: E402
 from level.l3lib import wow, input_text_l3lib, markdown
-from leve;.l4lib import image
+from level.l4lib import image
 ```
 
 开始前执行以上代码来初始化
