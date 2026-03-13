@@ -58,11 +58,6 @@ from leve;.l4lib import image
 
 执行`build.ps1`或从资源管理器拖进终端并按下Enter
 
-> [!WARNING]
-> 你应该在打包之前添加你使用的各种文件
->
-> 关卡文件请添加到 `Main.py`
-
 ## 调试
 
 在根目录（**注意不是关卡目录**）执行 `python -m level.无后缀关卡名`
