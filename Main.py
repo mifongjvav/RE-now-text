@@ -5,12 +5,23 @@ from level.l3lib import wow
 import logging
 import coloredlogs
 import sys
+import os
 from pathlib import Path
 import build_package
+import lica
 from rich.traceback import install
 install(show_locals=True)  # 安装 Rich 的 traceback 处理器
 
 build_package
+
+if getattr(sys, 'frozen', False):
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(__file__)
+lica.unpack(
+    os.path.join(base_path, "res.lica"),
+    os.path.join(os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else base_path, "image")
+)
 
 log_path = Path.cwd() / "latest.log"
     

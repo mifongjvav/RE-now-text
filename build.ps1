@@ -1,7 +1,14 @@
 ﻿# ===== 用户可修改的配置 =====
 $rootDir = "./level"
-$outputFile = ".\build_package.py"
+$outputFile = "./build_package.py"
+$resDir = "./image"
 # ============================
+
+python -c @"
+import lica
+lica.pack_directory('res.lica', '$resDir')
+print('资源打包完成！')
+"@
 
 $rootFull = Resolve-Path -Path $rootDir -ErrorAction Stop
 $rootName = Split-Path -Leaf $rootFull
@@ -55,8 +62,7 @@ Write-Host "Generated import statements to $outputFile (scanning root: $rootFull
 $pyArgs = @(
     '--console',
     '--add-data', 'MenuLite\Menu\MlConfig.json;Menu',
-    '--add-data', 'level\init.py;level',
-    '--add-data', 'image\level4_ayyV.jpg;image',
+    '--add-data', 'res.lica;.',
     '--name', 'RE-now-text',
     'Main.py'
 )

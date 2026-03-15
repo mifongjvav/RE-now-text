@@ -10,6 +10,8 @@ import traceback
 import builtins
 from rich.align import Align
 import time
+from rich.traceback import install
+install(show_locals=True)  # 安装 Rich 的 traceback 处理器
 
 width = 20
 

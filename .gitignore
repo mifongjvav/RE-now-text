@@ -1,5 +1,7 @@
 now
 advancements
+res/
+res.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

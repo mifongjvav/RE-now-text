@@ -13,14 +13,12 @@ chars = []
 
 
 def resource_path(relative_path):
-    """获取资源的绝对路径（兼容开发环境和 PyInstaller 打包后）"""
-    try:
-        # PyInstaller 打包后的临时目录
-        base_path = sys._MEIPASS
-    except AttributeError:
-        # 开发环境，使用当前目录
-        base_path = os.path.abspath(".")
-
+    """获取资源的绝对路径"""
+    if getattr(sys, 'frozen', False):
+        base_path = os.path.dirname(sys.executable)
+    else:
+        base_path = os.path.dirname(__file__)
+    
     return os.path.join(base_path, relative_path)
 
 
