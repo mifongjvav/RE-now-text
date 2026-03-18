@@ -12,6 +12,8 @@ from level.l3lib import markdown
 import requests
 from galite import main_menu_p, set_theme
 import coloredlogs
+from rich.traceback import install
+install(show_locals=True)  # 安装 Rich 的 traceback 处理器
 
 coloredlogs.install(
     level='WARNING', 

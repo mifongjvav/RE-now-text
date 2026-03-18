@@ -14,11 +14,11 @@ chars = []
 
 def resource_path(relative_path):
     """获取资源的绝对路径"""
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, "frozen", False):
         base_path = os.path.dirname(sys.executable)
     else:
-        base_path = os.path.dirname(__file__)
-    
+        base_path = ""
+
     return os.path.join(base_path, relative_path)
 
 
@@ -55,7 +55,7 @@ def image(img_file: str, width: int = 120, char: str = "█", square: bool = Fal
     for y in range(pix_height):
         line = Text()
         for x in range(pix_width):
-            r, g, b = pixels[y, x]
+            r, g, b = pixels[y, x][:3]
             colored_char = Text(char, style=rgb_to_ansi(r, g, b))
             if square:
                 # 同一个像素用两个相同颜色的字符并排

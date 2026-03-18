@@ -1,4 +1,4 @@
-# RE:now!text v1.0.0-rc2
+# RE:now!text v1.0.0-rc3
 
 - **终端无限，故事可见**
 
@@ -54,7 +54,7 @@ from level.l4lib import image
 
 其它没什么好说的，和Python一样，你可以随意搭配，放在什么目录都没人管你
 
-## 使用pyinstaller打包
+## 打包
 
 执行`build.ps1`或从资源管理器拖进终端并按下Enter
 
