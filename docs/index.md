@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "RE:now!text Wiki"
   text: "终端无限，故事可见"
-  tagline: My great project tagline
+  tagline: 轻量级 · 可扩展 · 只需终端
   actions:
     - theme: brand
       text: 快速上手
