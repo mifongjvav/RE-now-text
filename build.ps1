@@ -1,7 +1,7 @@
 ﻿# ===== 用户可修改的配置 =====
 $rootDir = "./level"
 $outputFile = "./build_package.py"
-$resDir = "./image"
+$resDir = "./res"
 # ============================
 
 python -c @"

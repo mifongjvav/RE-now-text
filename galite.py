@@ -11,6 +11,7 @@ import builtins
 from rich.align import Align
 import time
 from rich.traceback import install
+
 install(show_locals=True)  # 安装 Rich 的 traceback 处理器
 
 width = 20
@@ -123,9 +124,7 @@ def P(
         enter_is_next()
 
     global return_value
-    if hasattr(rendered, '__rich_console__'):
-    # 如果是 Rich 对象，想办法提取纯文本
-    # 这里简单处理：如果是 Panel，里面可能包着表格，暂时返回空字符串
+    if hasattr(rendered, "__rich_console__"):
         return_value[0] = ""
     else:
         return_value[0] = str(rendered)

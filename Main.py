@@ -18,10 +18,18 @@ if getattr(sys, 'frozen', False):
     base_path = sys._MEIPASS
     lica.unpack(
     os.path.join(base_path, "res.lica"),
-    os.path.join(os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else base_path, "image")
+    os.path.join(os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else base_path, "res")
 )
 
-log_path = Path.cwd() / "latest.log"
+if getattr(sys, 'frozen', False):
+    # 打包成 exe 后
+    log_dir = Path(sys.executable).parent
+else:
+    # 开发环境
+    log_dir = Path(__file__).parent
+
+# 创建日志文件路径（指定文件名）
+log_path = log_dir / "debug.log"
     
 # 清理现有的日志处理器
 for handler in logging.root.handlers[:]:
@@ -32,8 +40,7 @@ for handler in logging.root.handlers[:]:
 try:
     log_path.unlink(missing_ok=True)
 except PermissionError:
-    # 记录警告但继续执行
-    print(f"警告：无法删除旧的日志文件 {log_path}，权限不足", file=sys.stderr)
+    pass
 
 # 配置文件日志和控制台日志
 logging.basicConfig(
