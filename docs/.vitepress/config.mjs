@@ -44,7 +44,7 @@ export default defineConfig({
 
     // 编辑此页链接
     editLink: {
-      pattern: 'https://github.com/mifongjvav/RE-now-text/edit/main/docs/:path',
+      pattern: 'https://github.com/mifongjvav/RE-now-text/edit/dev/docs/:path',
       text: '在 GitHub 上编辑此页'
     },
 
