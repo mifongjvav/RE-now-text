@@ -83,7 +83,7 @@ python Main.py
 这个函数可以美化对话框，参数在文档字符串里面写的非常详细
 
 > [!WARNING]
-> 此主题仅支持`terminaltables3`系列主题
+> 此函数仅支持`terminaltables3`系列主题
 
 ##### markdown()
 
