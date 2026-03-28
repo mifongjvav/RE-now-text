@@ -20,10 +20,13 @@ coloredlogs.install(
     fmt="%(message)s"
 )
 
-notice = requests.get(
-    "https://gh.llkk.cc/https://raw.githubusercontent.com/mifongjvav/mifongjvav/refs/heads/main/RNT_msg.md"
-).text
-markdown(notice, wait=False)
+try:
+    notice = requests.get(
+        "https://gh.llkk.cc/https://raw.githubusercontent.com/mifongjvav/mifongjvav/refs/heads/main/RNT_msg.md"
+    ).text
+    markdown(notice, wait=False)
+except Exception as e:
+    logging.warning(f"警告：无法获取公告：{e}")
 logging.warning(
     "\n警告：RE:now!text还处于极早期测试阶段，出现任何bug都是很正常的\n出现bug请反馈：https://github.com/mifongjvav/RE-now-text/issues/new"
 )

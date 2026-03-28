@@ -100,3 +100,19 @@ python Main.py
 这是一个实验性功能，它类似于[文字游戏](https://store.steampowered.com/app/1109570/)
 
 默认使用`72x72`大小的地图，内容完全随机生成，具体可在`map.py`中的`generate_map`函数更改
+
+#### 不确定值进度条
+
+让 `Windows 终端` 显示一个不确定值的进度条在窗口与任务栏
+
+> [!WARNING]
+> 你不应该把他放在主线程里面运行，因此，你应该这么写：
+>
+> ```python
+> import Main  #noqa: E402
+> loading_t = threading.Thread(target=Main.loading)
+> loading_t.start()
+> Main.is_loading = False
+> ```
+>
+> 注意：并不需要 `join()` 该线程
