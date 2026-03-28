@@ -118,4 +118,4 @@ python Main.py
 > 注意：并不需要 `join()` 该线程
 
 示例：
-![pe1EBdI.md.png](https://s41.ax1x.com/2026/03/28/pe1EBdI.md.png)
+![example](https://db0l8fnn8oqtof.database.nocode.cn/storage/v1/object/public/wenjian/anonymous/1774684778651_17q30xejdbhh.png)
