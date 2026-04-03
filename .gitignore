@@ -1,7 +1,8 @@
 now
 advancements
-res/
 res.*
+build_package.py
+wip/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

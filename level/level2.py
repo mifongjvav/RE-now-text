@@ -1,10 +1,10 @@
 import webbrowser
-from level.init import init
+from level.libs.init import init
 init()
 from galite import P, S, A, N, input_text, set_theme # noqa: E402
 
 P('Argon','欢迎来到RE:now!text的第二关！')
-P('Argon','这是一个示例模板，为了让你获得一些制作游戏的灵感')
+P('Argon','这是一个示例模板，为了让你获得一些制作更强大的游戏的灵感')
 P('Argon','在这个关卡里，你可以随意发挥，\n使用P函数输出文本，使用S函数获取输入，使用A函数记录进度，使用N函数跳转关卡，使用E函数退出游戏')
 P('Argon','你可以在这个关卡里干任何事，没人想管你')
 S('Argon','你可以输入任何python代码，解释器会执行它，我没有屏蔽一些危险代码，但你也别犯傻')

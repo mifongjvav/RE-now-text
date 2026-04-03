@@ -61,9 +61,9 @@ Write-Host "Generated import statements to $outputFile (scanning root: $rootFull
 
 $pyArgs = @(
     '--console',
-    '--add-data', 'MenuLite\Menu\MlConfig.json;Menu',
+    '--add-data', 'MenuLite\Menu\MlConfig.yaml;Menu',
     '--add-data', 'res.lica;.',
     '--name', 'RE-now-text',
     'Main.py'
 )
-pyinstaller @pyArgs
+# pyinstaller @pyArgs

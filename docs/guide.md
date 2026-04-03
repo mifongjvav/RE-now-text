@@ -100,3 +100,97 @@ python Main.py
 这是一个实验性功能，它类似于[文字游戏](https://store.steampowered.com/app/1109570/)
 
 默认使用`72x72`大小的地图，内容完全随机生成，具体可在`map.py`中的`generate_map`函数更改
+
+#### 不确定值进度条
+
+让 `Windows 终端` 显示一个不确定值的进度条在窗口与任务栏
+
+> [!WARNING]
+> 你不应该把它放在主线程里面运行，因此，你应该这么写：
+>
+> ```python
+> import Main  #noqa: E402
+> loading_t = threading.Thread(target=Main.loading)
+> loading_t.start()
+> Main.is_loading = False
+> ```
+>
+> 注意：并不需要 `join()` 该线程
+
+示例：
+![example](https://db0l8fnn8oqtof.database.nocode.cn/storage/v1/object/public/wenjian/anonymous/1774684778651_17q30xejdbhh.png)
+
+### 高级
+
+#### 音频播放
+
+```python
+player = SpatialAudioPlayer()
+player.load('文件位置')
+player.play()
+```
+
+这是一个简单的示例，但实际上，它支持 `HRTF` 和 `VBAP` 音频播放
+
+## 使用Markdown编写关卡
+
+在 `1.2.0-rc3`，我们加入了M2G，你可以使用Markdown来编写关卡，更简单，更快
+
+M2G 可以将 Markdown 剧本自动转换为 RNT Python 代码，让编剧无需学习Python也可以创作出好剧情。
+
+### 支持的语法
+
+```markdown
+# 标题               → 作为注释保留，用于章节标记
+
+> 注释               → 转换为 Python 注释
+
+- 角色名             → 切换当前说话角色
+- 全称<别名1,别名2...   → 注册角色及别名（不切换角色）
+
+普通文本             → 转换为 P("角色名", "文本")
+
+S<提示文本          → 转换为 S("角色名", "提示文本")
+
+A<成就名<等级       → 转换为 A("成就名", 等级)
+
+N<关卡名            → 转换为 N("关卡名")
+
+exit<<状态码        → 转换为 E(状态码)
+
+```python
+# Python 代码块
+wow("渐变文字")
+markdown("# 标题")
+```
+
+### 示例剧本
+
+```markdown
+# md/level1
+
+> 定义角色
+
+- Argon<argon,arg
+
+> 使用别名
+
+- arg
+
+欢迎来到 RNT 引擎！
+
+S<你叫什么名字？
+
+- Argon
+
+你好，{input_text[0]}！
+
+A<初次见面<0
+
+N<level2
+
+```
+
+### 转换结果
+
+运行 `python Main.py --RNT --M2G 目录` 后，自动生成关卡到 `level/`，可直接被 RNT 引擎加载。

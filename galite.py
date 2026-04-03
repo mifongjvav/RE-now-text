@@ -11,6 +11,7 @@ import builtins
 from rich.align import Align
 import time
 from rich.traceback import install
+from io import StringIO
 
 install(show_locals=True)  # 安装 Rich 的 traceback 处理器
 
@@ -49,7 +50,7 @@ def _render_with_theme(title, content, theme=None):
             pad_edge=False,
             expand=False,
             collapse_padding=True,
-            highlight=False,
+            highlight=True,
             show_footer=False,
             show_edge=False,
         )
@@ -72,8 +73,6 @@ def _render_with_theme(title, content, theme=None):
             padding=(1, 2),
         )
         return panel
-
-    # 其他主题（double/single/ascii）仍然用 terminaltables3
     else:
         from terminaltables3 import DoubleTable, SingleTable, AsciiTable
 
@@ -112,6 +111,13 @@ def enter_is_next():
     time.sleep(0.2)
 
 
+def table_to_string(table):
+    """将 Rich Table 转换为字符串"""
+    console = Console(file=StringIO(), force_terminal=False)
+    console.print(table)
+    return console.file.getvalue()
+
+
 def P(
     title: str = "undefined", text: str = "undefined", theme=None, hide: bool = False
 ):
@@ -125,7 +131,7 @@ def P(
 
     global return_value
     if hasattr(rendered, "__rich_console__"):
-        return_value[0] = ""
+        return_value[0] = table_to_string(rendered)
     else:
         return_value[0] = str(rendered)
 
@@ -154,7 +160,10 @@ def S(
         input_text[0] = input()
 
     global return_value
-    return_value[0] = str(rendered)
+    if hasattr(rendered, "__rich_console__"):
+        return_value[0] = table_to_string(rendered)
+    else:
+        return_value[0] = str(rendered)
 
 
 def A(name: str = "undefined", level: int = 0, theme=None):
@@ -228,7 +237,7 @@ def N(path: str):
     try:
         with open("now", "w", encoding="utf-8") as f:
             f.write(path)
-        importlib.import_module(f"level.{path}")
+        importlib.import_module(path)
     except Exception as e:
         print(f"加载关卡失败: {e}")
         traceback.print_exc()

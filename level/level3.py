@@ -1,12 +1,11 @@
-from level.init import init
+from level.libs.init import init
+from level.libs.l3lib import wow, input_text_l3lib, markdown
 init()
-from galite import P, S, N, clear, return_value, input_text, set_theme  # noqa: E402
-from level.l3lib import wow, input_text_l3lib, markdown  # noqa: E402
+from galite import P, S, N, clear, return_value, input_text  # noqa: E402
 
 P("Argon", "欢迎来到RE:now!text的第三关！")
-P("Argon", "这是一个示例模板……停，你好像已经听腻了，那不如我们换换口味吧\n为防止bug，已切换主题")
+P("Argon", "这是一个示例模板……停，你好像已经听腻了，那不如我们换换口味吧")
 clear()
-set_theme('single')
 P("Argon", "伟大的RE:now!text第三关！现已开始！", hide=True)
 wow(return_value[0], text_color='black')
 P("Argon", "怎么样？这个效果还不错吧？")
@@ -29,9 +28,8 @@ if input_text_l3lib[0] == "wow(return_value[0], start_color=[170, 224, 242], end
     P("Argon", "你真棒！完全正确！")
 else:
     P("Argon", "你写的代码是：\n" + input_text_l3lib[0] + "\n虽然不完全正确，但也不错了！")
-set_theme()
 P("Argon", "注意：wow的input逻辑使用l3lib里面的input_text_l3lib而非galite里面的input_text")
-P("Argon", "第三关现在结束了（划掉），第三关被我续写了\n你可能想问为什么我不用Rich的样式属性，因为有bug")
+P("Argon", "第三关现在结束了（划掉），第三关被我续写了")
 text = """
 # 这是l3lib的markdown功能
 
@@ -48,5 +46,5 @@ except Exception as e:
     P('Argon', e)
     md_text = "# 错误：无法读取文件\n\n请确保文件路径正确。\n"
 markdown(md_text)
-P('Argon', '发明Rich的真是个天才，下一关你会见识到更多基于Rich的高级函数')
+P('Argon', '发明Rich的真是个天才，下一关开始你会见识到更多基于Rich的高级函数')
 N('level4')
