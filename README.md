@@ -1,4 +1,4 @@
-# RE:now!text v1.2.0-rc3
+# RE:now!text v1.2.0
 
 - **终端无限，故事可见**
 
