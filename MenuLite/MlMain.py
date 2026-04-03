@@ -1,15 +1,13 @@
 import logging
 from logging import error
 from rich import print
-from json import load
-from os import path, _exit
+import yaml
+import os
 import shared_data
 from shared_data import condition_vars
 import sys
 from subprocess import run
 from MenuLite.Menu.MenuFunc import *  # noqa: F403
-from level.l3lib import markdown
-import requests
 from galite import main_menu_p, set_theme
 import coloredlogs
 from rich.traceback import install
@@ -20,13 +18,6 @@ coloredlogs.install(
     fmt="%(message)s"
 )
 
-try:
-    notice = requests.get(
-        "https://gh.llkk.cc/https://raw.githubusercontent.com/mifongjvav/mifongjvav/refs/heads/main/RNT_msg.md"
-    ).text
-    markdown(notice, wait=False)
-except Exception as e:
-    logging.warning(f"警告：无法获取公告：{e}")
 logging.warning(
     "\n警告：RE:now!text还处于极早期测试阶段，出现任何bug都是很正常的\n出现bug请反馈：https://github.com/mifongjvav/RE-now-text/issues/new"
 )
@@ -35,11 +26,11 @@ logging.warning(
 def get_config_path():
     """获取配置文件的正确路径（兼容打包环境）"""
     if getattr(sys, "frozen", False):
-        base_path = getattr(sys, "_MEIPASS", path.dirname(sys.executable))
+        base_path = getattr(sys, "_MEIPASS", os.path.dirname(sys.executable))
     else:
-        base_path = path.dirname(path.abspath(__file__))
+        base_path = os.path.dirname(os.path.abspath(__file__))
 
-    return path.join(base_path, "Menu", "MlConfig.json")
+    return os.path.join(base_path, "Menu", "MlConfig.yaml")
 
 
 # 获取配置路径并加载
@@ -47,7 +38,7 @@ config_path = get_config_path()
 
 try:
     with open(config_path, encoding="utf-8") as file:
-        config = load(file)
+        config = yaml.safe_load(file)
 except FileNotFoundError:
     error(f"配置文件未找到: {config_path}")
     error("请确保打包时已添加配置文件，或检查文件路径")
@@ -122,7 +113,7 @@ def ml_input():
                 error(f"无效的键: {user_input}")
         except KeyboardInterrupt:
             print("\n用户中断操作")
-            _exit(0)
+            sys.exit(0)
         except Exception as e:
             import traceback
 

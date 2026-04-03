@@ -6,7 +6,6 @@ export default defineConfig({
   cleanUrls: true,
 
   themeConfig: {
-    // 网站左上角的Logo (可选，把logo.png放到 docs/public/ 目录下)
     logo: 'https://afsweb.qzz.io/logo.svg',
 
     // 顶部导航栏 (nav)

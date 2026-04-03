@@ -1,4 +1,4 @@
-from .init import init
+from .libs.init import init
 init()
 from galite import P, S, A, N, input_text, set_theme # noqa: E402
 
@@ -21,5 +21,5 @@ A('这是一个进度', 0)
 A('这是一个目标', 1)
 A('这是一个挑战', 2)
 P('Argon','你可以使用"N"来跳转到其它关卡，\n使用"E"退出（虽然但是好像执行完就退出了吧🤔）\n使用"E"退出会在退出前执行清屏，并且可以带状态码\n此外，你可以直接运行关卡文件，上面的 init() 已经初始化好了，无需担心目录问题')
-P('Argon','好了，这就是RE:now!text的基本操作了！祝你游戏愉快！接下来会使用"N"来进入一个示例游戏！')
+P('Argon','好了，这就是RE:now!text的基本操作了！祝你游戏愉快！接下来会使用"N"来进入下一个教程！')
 N('level2')
