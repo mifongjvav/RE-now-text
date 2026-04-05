@@ -44,7 +44,7 @@ except FileNotFoundError:
     error("请确保打包时已添加配置文件，或检查文件路径")
     sys.exit(1)
 
-menu_items = config["menu_items"]
+menu_items = {str(k): v for k, v in config["menu_items"].items()}
 
 
 def check_conditions(conditions):
@@ -111,9 +111,6 @@ def ml_input():
                     error(f"函数 {func_name} 不存在或不可调用")
             else:
                 error(f"无效的键: {user_input}")
-        except KeyboardInterrupt:
-            print("\n用户中断操作")
-            sys.exit(0)
         except Exception as e:
             import traceback
 

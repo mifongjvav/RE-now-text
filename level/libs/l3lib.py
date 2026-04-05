@@ -103,8 +103,6 @@ def wow(
     # 根据参数决定下一步
     if wait_input:
         global input_text_l3lib
-        console.print()
-        console.print("[dim]请输入: [/dim]", end="")
         input_text_l3lib[0] = input()
     elif wait:
         enter_is_next()
