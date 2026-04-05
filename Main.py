@@ -2,8 +2,6 @@ from MenuLite.MlMain import ml_input
 from MenuLite.MlMain import set_condition_var
 import shared_data
 from level.libs.l3lib import wow
-import logging
-import coloredlogs
 import sys
 import os
 from pathlib import Path
@@ -15,6 +13,7 @@ import time
 import argparse
 import M2G
 from rich.traceback import install
+from galite import clear
 
 install(show_locals=True)  # 安装 Rich 的 traceback 处理器
 
@@ -75,37 +74,6 @@ def init_pkg():
         # 开发环境
         log_dir = Path(__file__).parent
 
-
-def init_log():
-    # 创建日志文件路径（指定文件名）
-    log_path = log_dir / "debug.log"
-    # 清理现有的日志处理器
-    for handler in logging.root.handlers[:]:
-        handler.close()
-        logging.root.removeHandler(handler)
-
-    # 删除旧的日志文件（如果存在）
-    try:
-        log_path.unlink(missing_ok=True)
-    except PermissionError:
-        pass
-
-    # 配置文件日志和控制台日志
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format="%(asctime)s - %(levelname)s - %(funcName)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-        handlers=[
-            logging.FileHandler(log_path, encoding="utf-8"),
-            logging.StreamHandler(sys.stdout),
-        ],
-    )
-
-    coloredlogs.install(
-        level="WARNING", fmt="%(asctime)s - %(levelname)s - %(funcName)s - %(message)s"
-    )
-
-
 def parser_init():
     parser = argparse.ArgumentParser()
     parser.add_argument("--RNT", dest="dev", action="store_true", help="以Dev身份访问")
@@ -165,7 +133,7 @@ def parser_init():
 
 def all_init():
     init_pkg()
-    init_log()
+    clear()
     try:
         with open("now", "r", encoding="utf-8") as f:
             level = f.read().strip()

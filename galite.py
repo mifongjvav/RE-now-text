@@ -9,9 +9,11 @@ import importlib
 import traceback
 import builtins
 from rich.align import Align
+from rich.live import Live
 import time
 from rich.traceback import install
 from io import StringIO
+import threading
 
 install(show_locals=True)  # 安装 Rich 的 traceback 处理器
 
@@ -94,6 +96,7 @@ def _render_with_theme(title, content, theme=None):
 
         table = table_class(table_data)
         table.title = title
+
         return table.table
 
 
@@ -119,17 +122,72 @@ def table_to_string(table):
 
 
 def P(
-    title: str = "undefined", text: str = "undefined", theme=None, hide: bool = False
+    title: str = "undefined",
+    text: str = "undefined",
+    theme=None,
+    hide: bool = False,
+    animate: bool = True,
+    animate_speed: float = 0.05,
 ):
+    """显示对话框，支持文字逐字动画，按任意键跳过"""
+    global input_text, return_value
+
     clear()
-    rendered = _render_with_theme(title, text, theme)
 
     if not hide:
         console.print()
-        console.print(Align.left(rendered))
-        enter_is_next()
 
-    global return_value
+        if animate:
+            # 直接用 Live 从空开始，但第一帧就显示第一个字符
+            stop_animation = threading.Event()
+
+            def check_keypress():
+                if sys.platform == "win32":
+                    import msvcrt
+
+                    msvcrt.getch()
+                else:
+                    import select
+
+                    select.select([sys.stdin], [], [], None)
+                    sys.stdin.read(1)
+                stop_animation.set()
+
+            key_thread = threading.Thread(target=check_keypress, daemon=True)
+            key_thread.start()
+
+            # 创建初始 Panel（空内容，但不打印）
+            empty_rendered = _render_with_theme(title, "", theme)
+            aligned_panel = Align.left(empty_rendered)
+
+            with Live(
+                aligned_panel, console=console, refresh_per_second=20, transient=False
+            ) as live:
+                current_text = ""
+                for char in text:
+                    if stop_animation.is_set():
+                        current_text = text
+                        new_rendered = _render_with_theme(title, current_text, theme)
+                        live.update(Align.left(new_rendered))
+                        break
+
+                    current_text += char
+                    new_rendered = _render_with_theme(title, current_text, theme)
+                    live.update(Align.left(new_rendered))
+                    time.sleep(animate_speed)
+
+        else:
+            # 非动画分支
+            rendered = _render_with_theme(title, text, theme)
+            if isinstance(rendered, str):
+                console.print(rendered)
+            else:
+                console.print(Align.left(rendered))
+
+        # 统一等待输入
+        input_text[0] = input()
+
+    rendered = _render_with_theme(title, text, theme)
     if hasattr(rendered, "__rich_console__"):
         return_value[0] = table_to_string(rendered)
     else:
@@ -139,8 +197,10 @@ def P(
 def main_menu_p(title: str = "undefined", text=None, theme=None):
     rendered = _render_with_theme(title, text, theme)
     console.print()
-    # 让整个 Panel 在终端中水平居中
-    console.print(Align.left(rendered))
+    if isinstance(rendered, str):
+        console.print(rendered)  # 字符串直接打印
+    else:
+        console.print(Align.left(rendered))  # Rich 对象居左
 
 
 def S(
@@ -148,18 +208,72 @@ def S(
     text: str = "undefined",
     theme=None,
     hide: bool = False,
+    animate: bool = True,
+    animate_speed: float = 0.05,
 ):
+    """输入框，支持逐字动画，按任意键跳过"""
+    global input_text, return_value
+
     clear()
-    rendered = _render_with_theme(title, text, theme)
 
     if not hide:
-        console.print()  # 空行
-        console.print(Align.left(rendered))
+        console.print()
 
-        global input_text
-        input_text[0] = input()
+        if animate:
+            empty_rendered = _render_with_theme(title, " ", theme)  # 用一个空格占位
 
-    global return_value
+            if isinstance(empty_rendered, str):
+                console.print(empty_rendered)
+                input_text[0] = input()
+                return_value[0] = empty_rendered
+                return
+
+            aligned_panel = Align.left(empty_rendered)
+
+            stop_animation = threading.Event()
+
+            def check_keypress():
+                if sys.platform == "win32":
+                    import msvcrt
+
+                    msvcrt.getch()
+                else:
+                    import select
+
+                    select.select([sys.stdin], [], [], None)
+                    sys.stdin.read(1)
+                stop_animation.set()
+
+            key_thread = threading.Thread(target=check_keypress, daemon=True)
+            key_thread.start()
+
+            with Live(
+                aligned_panel, console=console, refresh_per_second=20, transient=False
+            ) as live:
+                current_text = ""
+                for char in text:
+                    if stop_animation.is_set():
+                        current_text = text
+                        new_rendered = _render_with_theme(title, current_text, theme)
+                        live.update(Align.left(new_rendered))
+                        break
+
+                    current_text += char
+                    new_rendered = _render_with_theme(title, current_text, theme)
+                    live.update(Align.left(new_rendered))
+                    time.sleep(animate_speed)
+
+            # 动画结束后，等待用户输入
+            input_text[0] = input()
+        else:
+            rendered = _render_with_theme(title, text, theme)
+            if isinstance(rendered, str):
+                console.print(rendered)
+            else:
+                console.print(Align.left(rendered))
+            input_text[0] = input()
+
+    rendered = _render_with_theme(title, text, theme)
     if hasattr(rendered, "__rich_console__"):
         return_value[0] = table_to_string(rendered)
     else:
@@ -209,7 +323,6 @@ def A(name: str = "undefined", level: int = 0, theme=None):
             style="white",
             padding=(1, 2),
         )
-        # ✅ 只在这里输出，其他地方不要有 print(panel)
         console.print()
         console.print(Align.left(panel))
     else:

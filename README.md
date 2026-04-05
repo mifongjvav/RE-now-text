@@ -1,8 +1,6 @@
-# RE:now!text v1.2.0
+# RE:now!text v1.2.1
 
 - **终端无限，故事可见**
-
-最后亿个测试版
 
 > [!WARNING]
 > RE:now!text还在早期开发阶段
