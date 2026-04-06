@@ -184,8 +184,7 @@ def P(
             else:
                 console.print(Align.left(rendered))
 
-        # 统一等待输入
-        input_text[0] = input()
+        enter_is_next()
 
     rendered = _render_with_theme(title, text, theme)
     if hasattr(rendered, "__rich_console__"):
@@ -363,4 +362,6 @@ def E(code: int = 0):
 
 
 if __name__ == "__main__":
-    P("Argon", "你应该去启动关卡文件，而不是引擎文件")
+    from i18n import init_lang
+    init_lang()
+    P("Argon", sys.lang.error.start.galite)
